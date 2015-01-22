@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 function Game(numberOfPlayers){
   this.weapons = [];
   this.weapons.push(new Weapon({name: 'Sword', damage: 0.2, ammo: Infinity}));
@@ -45,4 +47,49 @@ function didHit(accuracy){
   return accuracy > Math.random();
 }
 
-console.log(JSON.stringify(new Game(4), null, 2));
+Game.prototype.fight = function(){
+  this.alivePlayers()
+    .forEach(function(player, i, alivePlayersArray){
+      var playerIndex = alivePlayersArray.indexOf(player);
+      console.log(playerIndex);
+
+      if (playerIndex !== -1) {
+        var nextPlayer = alivePlayersArray[playerIndex+1] || alivePlayersArray[0];
+        player.attack(nextPlayer);
+      }
+  });
+
+  return this;
+};
+
+Game.prototype.shufflePlayerOrder = function(){
+  this.players = _.shuffle(this.players);
+  return this;
+}
+
+Game.prototype.shuffleAndFight = function(){
+  return this
+    .shufflePlayerOrder()
+    .fight();
+}
+
+Game.prototype.alivePlayers = function(){
+  return this.players.filter(function(player){
+    return Math.round(player.health * 1e4)/1e4 >= 0;
+  })
+}
+
+Game.prototype.fightToTheDeath = function(){
+  while (this.aliveplayers().length > 1){
+    this.shuffleAndFight();
+  }
+}
+
+var game = new Game(4);
+game
+  .shuffleAndFight()
+  .shuffleAndFight()
+  .shuffleAndFight()
+  .shuffleAndFight();
+
+console.log(JSON.stringify(game, null, 2));
