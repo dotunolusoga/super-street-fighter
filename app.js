@@ -65,25 +65,25 @@ Game.prototype.fight = function(){
 Game.prototype.shufflePlayerOrder = function(){
   this.players = _.shuffle(this.players);
   return this;
-}
+};
 
 Game.prototype.shuffleAndFight = function(){
   return this
     .shufflePlayerOrder()
     .fight();
-}
+};
 
 Game.prototype.alivePlayers = function(){
   return this.players.filter(function(player){
     return Math.round(player.health * 1e4)/1e4 >= 0;
-  })
-}
+  });
+};
 
 Game.prototype.fightToTheDeath = function(){
   while (this.aliveplayers().length > 1){
     this.shuffleAndFight();
   }
-}
+};
 
 var game = new Game(4);
 game
