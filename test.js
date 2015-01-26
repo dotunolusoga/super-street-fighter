@@ -3,8 +3,10 @@
 
 'use strict';
 
-var expect = require('chai').expect;
-Game = require(process.cwd() + '/lib/Game');
+var expect    = require('chai').expect,
+    Game      = require(process.cwd() + '/lib/Game'),
+    Weapon   = require(process.cwd() + '/lib/Weapon'),
+    Player    = require(process.cwd() + '/lib/Player');
 
 describe('Game', function () {
   it ('should expect true and false', function () {
@@ -13,23 +15,31 @@ describe('Game', function () {
   });
 });
 
-describe('Game', function () {
-  it('should give weapons', function () {
-    expect(getRandomWeapon).to.be.true;
-    return 'weapon available';
+describe('Player', function () {
+  it('should have players', function () {
+  var player = new Player();
+  expect(player).to.be.an.instanceof(Player);
   });
 });
 
-describe('shufflePlayerOrder', function () {
-  it('should return "Players Shuffled"', function () {
-    var constructed = new Game();
-    expect(constructed.shufflePlayerOrder()).to.be.true;
+describe('Player Weapons', function () {
+  it('should have weapon keys', function () {
+    var weapon = new Weapon({name: 'Sword'});
+    expect(weapon).to.have.keys(['name', 'damage', 'accuracy', 'ammo']);
+  });
+});
+
+
+describe('Shuffle Player Order', function () {
+  it('should respond to shufflePlayerOrder', function () {
+    Game.prototype.shufflePlayerOrder = function () {};
+    expect(Game).to.respondTo('shufflePlayerOrder');
     });
   });
 
-describe('attack', function () {
-  it('should return "attacked"', function () {
-    var constructed = new Game();
-    expect(constructed.attack()).to.be.true;
+describe('Player', function () {
+  it('should respond to attack', function () {
+    Player.prototype.attack = function () {};
+    expect(Player).to.respondTo('attack');
   });
 });
